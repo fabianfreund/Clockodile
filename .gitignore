@@ -1,3 +1,9 @@
 node_modules/
 dist/
 .DS_Store
+*.key
+*.p8
+*.p12
+*.pem
+*.cer
+.env*
