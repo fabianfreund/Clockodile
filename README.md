@@ -13,6 +13,8 @@ Get the latest build from [Releases](https://github.com/fabianfreund/Clockodile/
 
 ## Highlights
 - **Menu-bar timer:** the running time sits next to the icon. Click it (or press ⌥⇧T anywhere) to start, stop or restart recent work.
+- **One click to clock in:** every project has a ▶, in the sidebar, in Projects and in Reports. The sidebar card shows what's running, or your last entry to continue.
+- **Your sidebar:** right-click it to choose what it shows: today, this week, unbilled, and recent, pinned or all projects.
 - **One-line quick entry:** type what you did, and Clockodile works out the rest.
 - **Your week at a glance:** daily totals, a timeline of the day, and a list you can edit inline.
 - **Billing built in:** hourly rates per client and project, billable / non-billable work, and an *unbilled → billed → paid* status on every entry.

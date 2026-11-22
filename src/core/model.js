@@ -26,6 +26,8 @@ export const DEFAULT_SETTINGS = {
   showTimerInMenuBar: true,
   shortcut: 'Alt+Shift+T',
   business: { name: '', details: '' }, // shown in the PDF header
+  // What the main window's sidebar shows. projects: 'recent' | 'pinned' | 'all' | 'hidden'.
+  sidebar: { today: true, week: true, unbilled: true, timer: true, projects: 'recent' },
 };
 
 export const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
@@ -43,6 +45,7 @@ export function migrate(raw) {
   if (!raw || typeof raw !== 'object') return db;
   db.settings = { ...db.settings, ...(raw.settings ?? {}) };
   db.settings.business = { ...DEFAULT_SETTINGS.business, ...(raw.settings?.business ?? {}) };
+  db.settings.sidebar = { ...DEFAULT_SETTINGS.sidebar, ...(raw.settings?.sidebar ?? {}) };
   db.clients = (raw.clients ?? []).filter((c) => c?.id).map((c) => ({
     id: str(c.id), name: str(c.name, 'Client'), rate: num(c.rate), archived: !!c.archived,
   }));
@@ -50,6 +53,7 @@ export function migrate(raw) {
   db.projects = (raw.projects ?? []).filter((p) => p?.id).map((p, i) => ({
     id: str(p.id), name: str(p.name, 'Project'), clientId: clientIds.has(p.clientId) ? p.clientId : null,
     color: str(p.color, COLORS[i % COLORS.length]), rate: num(p.rate), billable: p.billable !== false, archived: !!p.archived,
+    pinned: !!p.pinned,
   }));
   db.tags = (raw.tags ?? []).filter((t) => t?.id).map((t) => ({ id: str(t.id), name: str(t.name, 'tag') }));
   const projectIds = new Set(db.projects.map((p) => p.id));
@@ -228,6 +232,7 @@ export function apply(db, op, now = Date.now()) {
         id: p.id ?? uid(), name: p.name.trim(), clientId: byId(db.clients, p.clientId) ? p.clientId : null,
         color: str(p.color, old?.color ?? COLORS[db.projects.length % COLORS.length]),
         rate: num(p.rate), billable: p.billable ?? old?.billable ?? true, archived: !!p.archived,
+        pinned: p.pinned ?? old?.pinned ?? false,
       };
       return { ...db, projects: upsert(db.projects, project) };
     }
@@ -255,6 +260,7 @@ export function apply(db, op, now = Date.now()) {
     case 'settings.update': {
       const patch = { ...op.patch };
       if (patch.business) patch.business = { ...db.settings.business, ...patch.business };
+      if (patch.sidebar) patch.sidebar = { ...db.settings.sidebar, ...patch.sidebar };
       return { ...db, settings: { ...db.settings, ...patch } };
     }
     case 'db.import':

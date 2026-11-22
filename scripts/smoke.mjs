@@ -58,9 +58,24 @@ const CASES = {
     await new Promise((r) => setTimeout(r, 2500));
     if (q('.sheet')) throw new Error('pdf export did not finish');
   })()`,
+  sidebar: `(async () => { ${q}
+    if (!q('.side-card.running')) throw new Error('timer card missing');
+    q('.side-card .go').click(); ${wait}
+    if (q('.side-card.running')) throw new Error('card did not stop the timer');
+    const row = qa('.side-project')[1];
+    if (!row) throw new Error('no sidebar projects');
+    row.click(); ${wait}
+    if (!q('.side-project.on') || !q('.timer-card.running')) throw new Error('project click did not start tracking');
+    q('#sidebar').dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, clientX: 60, clientY: 400 })); ${wait}
+    if (!q('.panel')) throw new Error('customize menu missing');
+    qa('.panel .menu-item').find((b) => b.textContent === 'Unbilled').click(); ${wait}
+    if (qa('.stat').some((s) => s.textContent.startsWith('Unbilled'))) throw new Error('could not hide Unbilled');
+  })()`,
   projects: `(async () => { ${q}
     ${nav('Projects')}
     if (qa('.proj-row').length < 4) throw new Error('projects missing');
+    qa('.proj-row .play-btn')[0].click(); ${wait}
+    if (!q('.proj-row .play-btn.on')) throw new Error('project play did not start');
     q('#top-actions .btn.primary').click(); ${wait}
     if (!q('.sheet')) throw new Error('project sheet not open');
   })()`,

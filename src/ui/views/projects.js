@@ -5,6 +5,7 @@ import { h, mount } from '../lib/dom.js';
 import { icon } from '../lib/icons.js';
 import { act, api, state } from '../lib/state.js';
 import { colorPicker, empty, field, panel, sheet, toggle } from '../lib/widgets.js';
+import { playButton } from '../lib/actions.js';
 
 let showArchived = false;
 let navigate = () => {};
@@ -37,8 +38,10 @@ export const projects = {
           h('button.icon-btn', { title: 'Edit client', onclick: () => clientSheet(client) }, icon('edit')))),
       list.length
         ? list.sort((a, b) => a.name.localeCompare(b.name)).map((p) => h('div.proj-row', { class: p.archived ? 'archived' : '', onclick: (e) => { if (!e.target.closest('button')) projectSheet(p); } },
-          h('span.dot.big', { style: { background: p.color } }),
+          !p.archived ? playButton(p.id, { name: p.name }) : h('span.play-slot'),
+          h('span.dot', { style: { background: p.color } }),
           h('span.proj-name', p.name),
+          p.pinned && h('span.pin', { title: 'Pinned to sidebar' }, icon('pin')),
           p.archived && h('span.pill.unbilled', 'Archived'),
           !p.billable && h('span.muted', 'Not billable'),
           h('span.proj-rate.num.muted', p.billable ? `${money(rateFor(db, { projectId: p.id }))}/h` : ''),
@@ -66,6 +69,7 @@ function projectMenu(anchor, p) {
   const item = (ic, label, run, cls = '') => h('button.menu-item', { class: cls, onclick: () => { m.close(); run(); } }, icon(ic), label);
   const m = panel(anchor, [
     item('edit', 'Edit…', () => projectSheet(p)),
+    item('pin', p.pinned ? 'Unpin from Sidebar' : 'Pin to Sidebar', () => act({ type: 'project.save', project: { ...p, pinned: !p.pinned } })),
     item('archive', p.archived ? 'Unarchive' : 'Archive', () => act({ type: 'project.save', project: { ...p, archived: !p.archived } })),
     h('div.menu-sep'),
     item('trash', 'Delete…', () => deleteProject(p), 'danger'),

@@ -154,7 +154,7 @@ function timerBar() {
     projSlot.replaceChildren(projectButton(db, pid, (e) => pickProject(e.currentTarget)));
     tagBtn.classList.toggle('has', tags.length > 0);
     tagBtn.title = tags.length ? tags.map((t) => `#${byId(db.tags, t)?.name}`).join(' ') : 'Tags';
-    tagBtn.replaceChildren(icon('tag'), tags.length ? h('span.count', String(tags.length)) : null);
+    mount(tagBtn, icon('tag'), tags.length ? h('span.count', String(tags.length)) : null);
     go.className = `go ${cur ? 'stop' : 'play'}`;
     go.title = cur ? 'Stop  ⌘.' : 'Start  ↵';
     go.replaceChildren(icon(cur ? 'stop' : 'play'));

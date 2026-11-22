@@ -10,6 +10,7 @@ import { icon } from '../lib/icons.js';
 import { act, api, state } from '../lib/state.js';
 import { empty, field, panel, picker, projectItems, segmented, sheet, toast, toggle } from '../lib/widgets.js';
 import { openEntrySheet } from './entry-sheet.js';
+import { playButton } from '../lib/actions.js';
 
 let period = { unit: 'month', anchor: Date.now(), from: null, to: null };
 let filter = { clientIds: [], projectIds: [], tagIds: [], status: 'all', billable: 'all', search: '' };
@@ -215,7 +216,9 @@ function breakdownTable(db, r, money) {
   const groups = breakdown === 'client' ? r.byClient : breakdown === 'tag' ? r.byTag : r.byProject;
   const max = Math.max(...groups.map((g) => g.dur), 1);
   return h('div.bd', groups.map((g) => h('div.bd-row',
-    h('div.bd-name', g.color && h('span.dot', { style: { background: g.color } }), h('span', g.name), g.client && h('span.muted', g.client)),
+    h('div.bd-name',
+      breakdown === 'project' ? playButton(g.key === NO_PROJECT ? null : g.key, { name: g.name }) : null,
+      g.color && h('span.dot', { style: { background: g.color } }), h('span', g.name), g.client && h('span.muted', g.client)),
     h('div.bd-bar', h('span', { style: { width: `${(g.dur / max) * 100}%`, background: g.color ?? 'var(--accent)' } })),
     h('span.bd-pct.num', r.total ? `${Math.round((g.dur / r.total) * 100)}%` : ''),
     h('span.bd-dur.num', fmtDuration(g.dur)),
