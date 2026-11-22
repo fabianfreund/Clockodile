@@ -1,7 +1,7 @@
 // The "New entry" / "Edit entry" sheet. Times are typed freely ("930", "2:15pm") and the duration
 // field stays in sync with start/end in both directions.
 import { byId, STATUSES } from '../../core/model.js';
-import { DAY, MIN, fmtClock, fmtDuration, fmtISODate, parseClock, parseDuration, parseISODate, startOfDay } from '../../core/time.js';
+import { DAY, MIN, fmtClock, fmtHuman, fmtISODate, parseClock, parseDuration, parseISODate, startOfDay } from '../../core/time.js';
 import { h } from '../lib/dom.js';
 import { icon } from '../lib/icons.js';
 import { act, api, state } from '../lib/state.js';
@@ -36,7 +36,7 @@ export function openEntrySheet(entry, { day = Date.now() } = {}) {
   const date = h('input.input', { type: 'date', value: fmtISODate(draft.day), onchange: (e) => { const d = parseISODate(e.target.value); if (!Number.isNaN(d)) draft.day = d; } });
   const start = h('input.input.num', { value: fmtMin(draft.startMin), onchange: () => syncFrom('start') });
   const end = h('input.input.num', { value: isRunning ? 'running' : fmtMin(draft.startMin + draft.durMin), disabled: isRunning, onchange: () => syncFrom('end') });
-  const dur = h('input.input.num', { value: fmtDuration(draft.durMin * MIN), disabled: isRunning, onchange: () => syncFrom('dur') });
+  const dur = h('input.input.num', { value: fmtHuman(draft.durMin * MIN), disabled: isRunning, onchange: () => syncFrom('dur') });
   const billWrap = h('div');
   const statusWrap = h('div');
 
@@ -52,7 +52,7 @@ export function openEntrySheet(entry, { day = Date.now() } = {}) {
       if (!Number.isNaN(ms) && ms > 0) draft.durMin = Math.round(ms / MIN);
     }
     start.value = fmtMin(draft.startMin);
-    if (!isRunning) { end.value = fmtMin(draft.startMin + draft.durMin); dur.value = fmtDuration(draft.durMin * MIN); }
+    if (!isRunning) { end.value = fmtMin(draft.startMin + draft.durMin); dur.value = fmtHuman(draft.durMin * MIN); }
   }
 
   function renderProject() {

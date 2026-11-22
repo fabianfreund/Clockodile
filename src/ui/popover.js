@@ -47,7 +47,7 @@ async function submit() {
   if (draftProject !== undefined) q.projectId = draftProject;
   const op = quickOp(q);
   if (await act(op)) {
-    input.value = ''; draftProject = undefined;
+    input.value = running(state.db)?.note ?? ''; draftProject = undefined;
     if (op.type === 'entry.add') toast(`Logged ${fmtHuman(q.end - q.start)}`);
     render(state.db);
   }

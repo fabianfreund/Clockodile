@@ -82,7 +82,7 @@ function renderSidebar(db) {
     h('span.side-project-name', p.name),
     r?.projectId === p.id
       ? h('span.num.side-live', { dataset: { since: r.start } }, fmtDuration(Date.now() - r.start, { seconds: true }))
-      : h('span.num.muted.side-week', week.get(p.id) ? fmtDuration(week.get(p.id)) : ''),
+      : h('span.num.muted.side-week', week.get(p.id) ? fmtHuman(week.get(p.id)) : ''),
     playButton(p.id, { name: p.name }))),
     cfg.projects === 'pinned' && !list.length && h('div.side-empty', 'Pin projects in Projects'),
     cfg.projects === 'recent' && !list.length && h('div.side-empty', 'No projects yet'));

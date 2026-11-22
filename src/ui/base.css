@@ -104,7 +104,7 @@ input[type=date]::-webkit-calendar-picker-indicator { opacity: .5; }
   display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; transition: background .12s;
 }
 .project-btn:hover { background: var(--hover); }
-.project-btn.empty { color: var(--fg2); }
+.project-btn.no-project { color: var(--fg2); }
 .project-btn-label { overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
 .project-btn-client { color: var(--fg3); overflow: hidden; text-overflow: ellipsis; }
 

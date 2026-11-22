@@ -119,7 +119,7 @@ export function projectItems(db, currentId) {
 export function projectButton(db, projectId, onClick) {
   const p = byId(db.projects, projectId);
   const c = p && byId(db.clients, p.clientId);
-  return h('button.project-btn', { class: p ? '' : 'empty', onclick: onClick, title: 'Project' },
+  return h('button.project-btn', { class: p ? '' : 'no-project', onclick: onClick, title: 'Project' },
     h('span.dot', { style: { background: p?.color ?? 'transparent' }, class: p ? '' : 'none' }),
     h('span.project-btn-label', p ? p.name : 'Project'),
     c && h('span.project-btn-client', c.name));

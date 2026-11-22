@@ -3,7 +3,7 @@
 import { byId, STATUSES } from '../../core/model.js';
 import { NO_PROJECT, buildReport, defaultFilter, toCSV } from '../../core/report.js';
 import {
-  HOUR, addDays, addMonths, fmtDuration, fmtHuman, fmtISODate, fmtMoney, fmtRange, parseISODate, rangeFor, startOfDay, startOfMonth, startOfWeek,
+  HOUR, addDays, addMonths, fmtHuman, fmtISODate, fmtMoney, fmtRange, parseISODate, rangeFor, startOfDay, startOfMonth, startOfWeek,
 } from '../../core/time.js';
 import { debounce, h, mount } from '../lib/dom.js';
 import { icon } from '../lib/icons.js';
@@ -221,7 +221,7 @@ function breakdownTable(db, r, money) {
       g.color && h('span.dot', { style: { background: g.color } }), h('span', g.name), g.client && h('span.muted', g.client)),
     h('div.bd-bar', h('span', { style: { width: `${(g.dur / max) * 100}%`, background: g.color ?? 'var(--accent)' } })),
     h('span.bd-pct.num', r.total ? `${Math.round((g.dur / r.total) * 100)}%` : ''),
-    h('span.bd-dur.num', fmtDuration(g.dur)),
+    h('span.bd-dur.num', fmtHuman(g.dur)),
     h('span.bd-amt.num', g.amount ? money(g.amount) : '—'))));
 }
 
@@ -257,7 +257,7 @@ function entriesTable(db, r, money) {
     if (d !== lastDay) {
       lastDay = d;
       const dayTotal = r.byDay.find((x) => x.day === d)?.dur ?? 0;
-      rows.push(h('div.et-day', h('span', new Date(d).toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })), h('span.num', fmtDuration(dayTotal))));
+      rows.push(h('div.et-day', h('span', new Date(d).toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' })), h('span.num', fmtHuman(dayTotal))));
     }
     rows.push(h('div.et-row', {
       class: selected.has(row.id) ? 'sel' : '',
@@ -269,7 +269,7 @@ function entriesTable(db, r, money) {
       h('span.et-note', { class: row.note ? '' : 'muted' }, row.note || 'No description'),
       h('span.et-meta', row.project ? row.project.name : 'No project', row.client ? ` · ${row.client.name}` : '', row.tagNames.map((t) => h('span.tag', t)))),
     h('span.pill', { class: row.status }, row.status[0].toUpperCase() + row.status.slice(1)),
-    h('span.et-dur.num', fmtDuration(row.dur)),
+    h('span.et-dur.num', fmtHuman(row.dur)),
     h('span.et-amt.num', row.billable ? money(row.amount) : h('span.muted', 'n/b'))));
   }
   return [head, h('div.et', rows)];

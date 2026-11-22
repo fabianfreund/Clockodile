@@ -35,6 +35,7 @@ const CASES = {
     const input = q('.timer-input');
     q('.go').click(); ${wait}                       // stop the demo timer
     if (q('.timer-card.running')) throw new Error('timer did not stop');
+    if (q('.project-btn').getBoundingClientRect().height > 40 || !q('.project-btn-label').offsetHeight) throw new Error('project button label hidden');
     input.value = 'Smoke test @website #dev 25m';
     input.dispatchEvent(new Event('input'));
     if (!q('.timer-hint').textContent.includes('Website Relaunch')) throw new Error('hint did not resolve project: ' + q('.timer-hint').textContent);
@@ -42,6 +43,7 @@ const CASES = {
     if (!qa('.entry-note').some((n) => n.textContent === 'Smoke test')) throw new Error('quick entry not logged');
     input.value = 'Writing tests'; input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' })); ${wait}
     if (!q('.timer-card.running')) throw new Error('timer did not start');
+    if (q('.timer-input').value !== 'Writing tests') throw new Error('timer bar lost the running name');
     q('.timer-input').blur();
   })()`,
   reports: `(async () => { ${q}

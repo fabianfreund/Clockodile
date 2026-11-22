@@ -98,7 +98,7 @@ function timerBar() {
         toast(`Logged ${fmtHuman(q.end - q.start)}${q.note ? ` · ${q.note}` : ''}`);
         day = startOfDay(q.start);
       }
-      input.value = '';
+      input.value = running(state.db)?.note ?? ''; // a started timer keeps its name in the bar
       draft = { projectId: undefined, tags: [] };
       track.update(state.db);
     }
@@ -197,7 +197,7 @@ function renderWeek(db) {
     h('span.wd-name', new Date(d).toLocaleDateString(undefined, { weekday: 'short' })),
     h('span.wd-date', new Date(d).getDate()),
     h('span.wd-bar', h('span', { style: { width: `${(totals[i] / max) * 100}%` } })),
-    h('span.wd-total.num', totals[i] ? fmtDuration(totals[i]) : '–')))));
+    h('span.wd-total.num', totals[i] ? fmtHuman(totals[i]) : '–')))));
 }
 
 // ── Timeline ribbon ──────────────────────────────────────────────────────────
@@ -262,7 +262,7 @@ export function entryRow(db, e, { showDate = false } = {}) {
     !e.billable && h('span.nb', { title: 'Not billable' }, icon('coin')),
     e.status !== 'unbilled' && h('span.pill', { class: e.status }, e.status === 'paid' ? 'Paid' : 'Billed'),
     h('span.entry-range.num', showDate ? new Date(e.start).toLocaleDateString(undefined, { day: 'numeric', month: 'short' }) + ' · ' : '', `${fmtClock(e.start)} – ${live ? 'now' : fmtClock(e.end)}`),
-    h('span.entry-dur.num', live ? { dataset: { since: e.start } } : {}, fmtDuration(durationOf(e), { seconds: live })),
+    h('span.entry-dur.num', live ? { dataset: { since: e.start } } : {}, live ? fmtDuration(durationOf(e), { seconds: true }) : fmtHuman(durationOf(e))),
     h('div.entry-actions',
       live
         ? h('button.icon-btn', { title: 'Stop', onclick: () => act({ type: 'timer.stop' }) }, icon('stop'))
