@@ -55,6 +55,8 @@ const CASES = {
     q('#top-actions .btn.primary').click(); ${wait} // Export sheet (PDF is the default format)
     if (!q('.sheet')) throw new Error('export sheet not open');
     q('.sheet-foot .btn.primary').click();
+    await new Promise((r) => setTimeout(r, 150));
+    if (!q('.sheet.busy')) throw new Error('no loading state while the PDF renders');
     await new Promise((r) => setTimeout(r, 2500));
     if (q('.sheet')) throw new Error('pdf export did not finish');
   })()`,

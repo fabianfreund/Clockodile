@@ -284,6 +284,9 @@ function baseName(db) {
 }
 
 const EXPORT_PREFS = 'clockodile.export';
+// Set while an export runs; the main process calls it after the save dialog closes.
+let busyHandler = null;
+api.onExportBusy((name) => busyHandler?.(name));
 function loadPrefs() {
   try { return JSON.parse(localStorage.getItem(EXPORT_PREFS)) ?? {}; } catch { return {}; }
 }
@@ -334,9 +337,14 @@ function openExport() {
     const { format, groupBy, showAmounts, showEntries, showTags, excel } = o;
     try { localStorage.setItem(EXPORT_PREFS, JSON.stringify({ format, groupBy, showAmounts, showEntries, showTags, excel })); } catch {}
     btn.disabled = true;
+    // The save dialog comes first; once a file is picked the main process says "busy" and the
+    // sheet shows a spinner until the PDF is written.
+    busyHandler = (name) => setBusy(true, name);
     const res = format === 'pdf'
       ? await api.exportPdf({ filter: report.filter, options: o, fileName: `${baseName(db)}.pdf` })
       : await api.exportCsv(toCSV(report, { excel }), `${baseName(db)}.csv`);
+    busyHandler = null;
+    setBusy(false);
     btn.disabled = false;
     if (res.error) return toast(res.error, { tone: 'error' });
     if (!res.ok) return;
@@ -348,11 +356,17 @@ function openExport() {
     } else toast('Exported');
   }
 
+  const busy = h('div.sheet-busy', h('span.spinner'), h('b', 'Creating PDF…'), h('span.muted.busy-name'));
+  function setBusy(on, name = '') {
+    s.el.classList.toggle('busy', on);
+    busy.querySelector('.busy-name').textContent = name;
+  }
+
   const s = sheet({
     title: 'Export',
     body: [
       h('div.export-summary', h('b', `${report.rows.length} entries · ${fmtHuman(report.total)}`), h('span.muted', `${fmtRange(report.filter.from, report.filter.to)} · ${fmtMoney(report.amount, db.settings.currency)}`)),
-      fmt, opts,
+      fmt, opts, busy,
     ],
     width: 460,
     actions: [h('span.spacer'), h('button.btn', { onclick: () => s.close() }, 'Cancel'), h('button.btn.primary', { onclick: (e) => go(e.currentTarget) }, 'Export')],

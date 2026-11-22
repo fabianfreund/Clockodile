@@ -304,10 +304,11 @@ async function renderPdf(job) {
 ipcMain.handle('pdf:job', (e) => ({ db, ...pdfReady.get(e.sender.id)?.job }));
 ipcMain.on('pdf:ready', (e) => pdfReady.get(e.sender.id)?.resolve());
 
-ipcMain.handle('export:pdf', async (_e, job) => {
+ipcMain.handle('export:pdf', async (e, job) => {
   try {
     const target = DEBUG ? process.env.CLOCKODILE_DEBUG_PDF : await saveDialog(job.fileName, [{ name: 'PDF', extensions: ['pdf'] }]);
     if (!target) return { ok: false };
+    e.sender.send('export:busy', path.basename(target)); // the page shows its loading state from here
     fs.writeFileSync(target, await renderPdf(job));
     if (!DEBUG) shell.openPath(target);
     return { ok: true, path: target };

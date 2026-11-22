@@ -8,6 +8,7 @@ contextBridge.exposeInMainWorld('clockodile', {
   onDb: (cb) => ipcRenderer.on('db', (_e, db) => cb(db)),
   onMenu: (cb) => ipcRenderer.on('menu', (_e, cmd) => cb(cmd)),
   exportPdf: (job) => ipcRenderer.invoke('export:pdf', job),
+  onExportBusy: (cb) => ipcRenderer.on('export:busy', (_e, name) => cb(name)),
   exportCsv: (csv, fileName) => ipcRenderer.invoke('export:csv', csv, fileName),
   exportJson: () => ipcRenderer.invoke('export:json'),
   importFile: () => ipcRenderer.invoke('data:import'),
