@@ -8,6 +8,8 @@ npm start      # real data in the user-data folder (macOS: ~/Library/Application
 npm run demo   # sample data, throwaway profile, nothing saved
 ```
 
+`npm start` uses the same data folder as the installed app, and only one copy runs at a time: opening the installed Clockodile while a dev copy runs just focuses the dev copy. Quit one before using the other.
+
 Clockodile opens its window and adds a menu-bar (tray) icon. Closing the window keeps it running in the menu bar. When it was launched at login, it starts with only the menu-bar icon.
 
 ## Test

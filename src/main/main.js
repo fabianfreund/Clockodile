@@ -33,6 +33,8 @@ const pdfReady = new Map(); // webContents id → resolve
 app.on('second-instance', () => openMain());
 
 app.whenReady().then(() => {
+  // Dev runs (npm start) show the croc in the Dock instead of Electron's icon.
+  if (!app.isPackaged && IS_MAC) app.dock?.setIcon(path.join(HERE, '..', '..', 'build', 'icon.png'));
   store = createStore(app.getPath('userData'));
   db = DEMO || (DEBUG && process.env.CLOCKODILE_DEBUG_SEED) ? demoDb() : store.load();
   buildMenu();
