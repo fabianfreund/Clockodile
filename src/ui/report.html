@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:">
+  <title>Clockodile Report</title>
+  <style>
+    @page { size: A4; margin: 16mm 16mm 18mm; }
+    * { box-sizing: border-box; }
+    html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { margin: 0; font: 9.5pt/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, "Helvetica Neue", sans-serif; color: #1d1d1f; background: #fff; }
+    .num { font-variant-numeric: tabular-nums; }
+    .muted { color: #6e6e73; }
+    header { display: flex; justify-content: space-between; gap: 24px; padding-bottom: 18px; border-bottom: 1.5px solid #1d1d1f; }
+    .brand { display: flex; align-items: center; gap: 7px; font-size: 8pt; font-weight: 600; color: #1fae6b; letter-spacing: .02em; text-transform: uppercase; margin-bottom: 10px; }
+    .brand i { width: 8px; height: 8px; border-radius: 50%; background: #1fae6b; display: inline-block; }
+    h1 { margin: 0; font-size: 22pt; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; }
+    .period { margin-top: 4px; font-size: 10.5pt; color: #3a3a3c; }
+    .from { text-align: right; max-width: 45%; }
+    .from b { font-size: 10.5pt; }
+    .from div { white-space: pre-line; color: #6e6e73; margin-top: 2px; }
+    .meta { display: flex; gap: 40px; margin: 16px 0 20px; }
+    .meta div { display: flex; flex-direction: column; }
+    .meta span { font-size: 7.5pt; text-transform: uppercase; letter-spacing: .05em; color: #8e8e93; font-weight: 600; }
+    .meta b { font-size: 10.5pt; font-weight: 600; }
+    .totals { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 10px; margin-bottom: 22px; }
+    .total { border-radius: 8px; background: #f5f5f7; padding: 10px 12px; }
+    .total span { display: block; font-size: 7.5pt; text-transform: uppercase; letter-spacing: .05em; color: #8e8e93; font-weight: 600; }
+    .total b { display: block; font-size: 15pt; font-weight: 700; letter-spacing: -.01em; margin-top: 2px; }
+    .total.accent { background: #e8f7ef; }
+    .total.accent b { color: #138a52; }
+    h2 { font-size: 10.5pt; margin: 22px 0 6px; font-weight: 650; }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-size: 7.5pt; text-transform: uppercase; letter-spacing: .05em; color: #8e8e93; font-weight: 600; padding: 6px 8px; border-bottom: 1px solid #d2d2d7; }
+    td { padding: 6px 8px; border-bottom: .5px solid #e5e5ea; vertical-align: top; }
+    tr { break-inside: avoid; }
+    .r { text-align: right; white-space: nowrap; }
+    .nowrap { white-space: nowrap; }
+    .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+    .tag { display: inline-block; font-size: 7.5pt; color: #6e6e73; background: #f2f2f7; border-radius: 3px; padding: 0 4px; margin-left: 4px; }
+    .group td { padding-top: 14px; font-weight: 650; border-bottom: 1px solid #d2d2d7; }
+    .subtotal td { font-weight: 600; border-bottom: 0; color: #3a3a3c; }
+    .grand td { font-weight: 700; font-size: 10.5pt; border-top: 1.5px solid #1d1d1f; border-bottom: 0; padding-top: 9px; }
+    .nb { color: #8e8e93; font-size: 8pt; }
+    footer { margin-top: 28px; font-size: 7.5pt; color: #8e8e93; display: flex; justify-content: space-between; }
+  </style>
+</head>
+<body>
+  <div id="doc"></div>
+  <script type="module" src="report.js"></script>
+</body>
+</html>

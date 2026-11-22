@@ -1,0 +1,56 @@
+/* Design tokens shared by every page. Edit here, not per page. Same family as OneShot's tokens. */
+:root {
+  --fg: #1d1d1f;
+  --fg2: rgba(0, 0, 0, .55);
+  --fg3: rgba(0, 0, 0, .34);
+  --line: rgba(0, 0, 0, .08);
+  --line2: rgba(0, 0, 0, .13);
+  --hover: rgba(0, 0, 0, .045);
+  --press: rgba(0, 0, 0, .085);
+  --field: rgba(0, 0, 0, .045);
+  --accent: #1fae6b;
+  --accent-fg: #ffffff;
+  --accent-soft: rgba(31, 174, 107, .13);
+  --stop: #ff4d4f;
+  --danger: #e5484d;
+  --warn: #f59e0b;
+  --info: #0a84ff;
+  --bg: #ffffff;
+  --bg-sub: #f7f7f8;
+  --card: #ffffff;
+  --chip: #ffffff;
+  --glass: rgba(255, 255, 255, .78);
+  --glass-edge: rgba(0, 0, 0, .08);
+  --shadow: 0 .5px 1.5px rgba(0, 0, 0, .16), 0 0 0 .5px rgba(0, 0, 0, .06);
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, .04), 0 0 0 .5px rgba(0, 0, 0, .07);
+  --float: 0 12px 36px rgba(0, 0, 0, .16), 0 2px 6px rgba(0, 0, 0, .06);
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --radius: 10px;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", system-ui, "Helvetica Neue", sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fg: #f5f5f7;
+    --fg2: rgba(255, 255, 255, .58);
+    --fg3: rgba(255, 255, 255, .34);
+    --line: rgba(255, 255, 255, .085);
+    --line2: rgba(255, 255, 255, .14);
+    --hover: rgba(255, 255, 255, .06);
+    --press: rgba(255, 255, 255, .12);
+    --field: rgba(255, 255, 255, .07);
+    --accent: #2fc97f;
+    --accent-fg: #06210f;
+    --accent-soft: rgba(47, 201, 127, .16);
+    --stop: #ff6163;
+    --bg: #1c1c1e;
+    --bg-sub: #232326;
+    --card: #262629;
+    --chip: #48484d;
+    --glass: rgba(40, 40, 44, .8);
+    --glass-edge: rgba(255, 255, 255, .1);
+    --shadow: 0 .5px 1.5px rgba(0, 0, 0, .5), inset 0 .5px 0 rgba(255, 255, 255, .08);
+    --card-shadow: 0 0 0 .5px rgba(255, 255, 255, .08);
+    --float: 0 12px 36px rgba(0, 0, 0, .5), 0 2px 6px rgba(0, 0, 0, .25), 0 0 0 .5px rgba(255, 255, 255, .1);
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "Clockodile",
+  "tagline": "Track time, bill clients, export clean PDF timesheets.",
+  "description": "A calm, fast time tracker that lives in your menu bar. Start a timer or log time in one line (\"Design review 1h30 @acme #meeting\"), see your week at a glance, mark entries as billed or paid, and export polished PDF timesheets or CSV. Idle detection, rates per client and project, rounding, and all data stays on your computer.",
+  "category": "Productivity",
+  "icon": "build/icon.png",
+  "screenshots": ["docs/assets/screenshot-track.png", "docs/assets/screenshot-reports.png"],
+  "accent": "#1FAE6B",
+  "highlights": [
+    "Menu-bar timer with idle detection",
+    "One-line quick entry",
+    "Billed / paid status per entry",
+    "PDF timesheets and CSV export"
+  ],
+  "platforms": ["macos", "windows", "linux"]
+}

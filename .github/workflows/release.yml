@@ -1,0 +1,60 @@
+# macOS builds are signed + notarized locally (scripts/release-mac.sh, `npm run release:mac`).
+# This builds Windows and Linux when a v* tag is pushed and attaches them to the same release.
+# Run it manually (Actions → Release → Run workflow) with an existing tag to rebuild that tag.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing tag to build (e.g. v0.1.1)
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: --win
+          - os: ubuntu-latest
+            target: --linux
+    runs-on: ${{ matrix.os }}
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - name: Build
+        # Unsigned until Windows signing is set up.
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: npx electron-builder ${{ matrix.target }} --publish never
+      - name: Upload to release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: Clockodile ${{ env.TAG }}
+          generate_release_notes: true
+          fail_on_unmatched_files: false
+          files: |
+            dist/*.exe
+            dist/*.exe.blockmap
+            dist/*.AppImage
+            dist/*.deb
+            dist/latest.yml
+            dist/latest-linux.yml

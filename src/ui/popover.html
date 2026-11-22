@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'">
+  <title>Clockodile</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="base.css">
+  <style>
+    body { display: flex; flex-direction: column; padding: 12px; gap: 12px; }
+    body:not(.os-darwin) { background: var(--bg-sub); }
+    .pop-head { display: flex; align-items: center; justify-content: space-between; padding: 0 2px; }
+    .pop-head b { font-size: 13px; }
+    .pop-head .today { color: var(--fg2); font-size: 12px; }
+    .now { background: var(--card); border-radius: 12px; box-shadow: var(--card-shadow); padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .now.running { box-shadow: var(--card-shadow), 0 0 0 1.5px color-mix(in srgb, var(--accent) 55%, transparent); }
+    .now-row { display: flex; align-items: center; gap: 8px; }
+    .now input { flex: 1; min-width: 0; height: 32px; border: 0; outline: 0; background: transparent; font-size: 15px; font-weight: 500; }
+    .now input::placeholder { color: var(--fg3); font-weight: 400; }
+    .elapsed { font-size: 26px; font-weight: 650; letter-spacing: -.02em; flex: 1; }
+    .now .project-btn { max-width: 100%; margin-left: -10px; }
+    .hint { font-size: 11px; color: var(--fg3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .label { font-size: 11px; font-weight: 600; color: var(--fg3); text-transform: uppercase; letter-spacing: .04em; padding: 0 4px; }
+    .recent { display: flex; flex-direction: column; gap: 1px; overflow-y: auto; flex: 1; min-height: 0; }
+    .rec { display: flex; align-items: center; gap: 9px; height: 42px; padding: 0 4px 0 10px; border-radius: 9px; border: 0; background: transparent; text-align: left; width: 100%; }
+    .rec:hover { background: var(--hover); }
+    .rec-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .rec-note { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .rec-sub { font-size: 11.5px; color: var(--fg2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .rec .play { opacity: 0; color: var(--accent); }
+    .rec:hover .play { opacity: 1; }
+    .foot { display: flex; gap: 6px; border-top: .5px solid var(--line); padding-top: 10px; }
+    .foot .btn { flex: 1; }
+    .none { color: var(--fg3); font-size: 12px; padding: 8px 10px; }
+  </style>
+</head>
+<body>
+  <div class="pop-head"><b>Clockodile</b><span class="today num" id="today"></span></div>
+  <div class="now" id="now"></div>
+  <div class="label">Recent</div>
+  <div class="recent" id="recent"></div>
+  <div class="foot" id="foot"></div>
+  <script type="module" src="popover.js"></script>
+</body>
+</html>
